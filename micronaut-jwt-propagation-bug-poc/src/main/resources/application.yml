@@ -1,0 +1,8 @@
+micronaut:
+  application:
+    name: jwtPropagationPoc
+  security:
+    token:
+      propagation:
+        enabled: true
+        service-id-regex: "whoami|baseline-micronaut"
