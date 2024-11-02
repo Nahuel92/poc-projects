@@ -1,5 +1,5 @@
 applicationType: default
-defaultPackage: org.nahuelrodriguez
+defaultPackage: io.github.nahuel92
 testFramework: junit
 sourceLanguage: java
 buildTool: maven

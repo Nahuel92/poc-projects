@@ -1,4 +1,4 @@
-package org.nahuelrodriguez;
+package io.github.nahuel92;
 
 import io.micronaut.context.annotation.Property;
 import io.micronaut.test.annotation.Sql;

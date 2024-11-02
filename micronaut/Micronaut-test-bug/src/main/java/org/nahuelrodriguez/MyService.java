@@ -1,4 +1,4 @@
-package org.nahuelrodriguez;
+package io.github.nahuel92;
 
 import jakarta.inject.Singleton;
 

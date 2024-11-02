@@ -1,4 +1,4 @@
-package org.nahuelrodriguez;
+package io.github.nahuel92;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.github.nahuel92.wiremock.micronaut.ConfigureWireMock;

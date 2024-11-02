@@ -1,4 +1,4 @@
-package org.nahuelrodriguez;
+package io.github.nahuel92;
 
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.annotation.Get;

@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: mavsdk-java-poc
+
+mavsdk:
+  hostname: ${MAVSDK_HOSTNAME:localhost}
+  port: ${MAVSDK_PORT:50051}

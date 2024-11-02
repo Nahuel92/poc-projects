@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.nahuelrodriguez</groupId>
+    <groupId>io.github.nahuel92</groupId>
     <artifactId>micronaut-circuitbreaker-poc</artifactId>
     <version>0.1</version>
     <packaging>${packaging}</packaging>
@@ -19,9 +19,9 @@
         <release.version>21</release.version>
         <micronaut.version>4.5.0</micronaut.version>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
-        <micronaut.aot.packageName>org.nahuelrodriguez.aot.generated</micronaut.aot.packageName>
+        <micronaut.aot.packageName>io.github.nahuel92.aot.generated</micronaut.aot.packageName>
         <micronaut.runtime>netty</micronaut.runtime>
-        <exec.mainClass>org.nahuelrodriguez.Application</exec.mainClass>
+        <exec.mainClass>io.github.nahuel92.Application</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -112,7 +112,7 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <arg>-Amicronaut.processing.group=org.nahuelrodriguez</arg>
+                        <arg>-Amicronaut.processing.group=io.github.nahuel92</arg>
                         <arg>-Amicronaut.processing.module=micronaut-circuitbreaker-poc</arg>
                     </compilerArgs>
                 </configuration>

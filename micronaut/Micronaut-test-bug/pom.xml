@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.nahuelrodriguez</groupId>
+    <groupId>io.github.nahuel92</groupId>
     <artifactId>bug-demo</artifactId>
     <version>0.1</version>
     <packaging>${packaging}</packaging>
@@ -20,8 +20,8 @@
         <micronaut.version>4.4.2</micronaut.version>
         <micronaut.runtime>netty</micronaut.runtime>
         <micronaut.aot.enabled>false</micronaut.aot.enabled>
-        <micronaut.aot.packageName>org.nahuelrodriguez.aot.generated</micronaut.aot.packageName>
-        <exec.mainClass>org.nahuelrodriguez.Application</exec.mainClass>
+        <micronaut.aot.packageName>io.github.nahuel92.aot.generated</micronaut.aot.packageName>
+        <exec.mainClass>io.github.nahuel92.Application</exec.mainClass>
     </properties>
 
     <repositories>
@@ -157,7 +157,7 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <arg>-Amicronaut.processing.group=org.nahuelrodriguez</arg>
+                        <arg>-Amicronaut.processing.group=io.github.nahuel92</arg>
                         <arg>-Amicronaut.processing.module=bug-demo</arg>
                     </compilerArgs>
                 </configuration>

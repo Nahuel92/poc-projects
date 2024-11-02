@@ -1,4 +1,4 @@
-package org.nahuelrodriguez;
+package io.github.nahuel92;
 
 import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
