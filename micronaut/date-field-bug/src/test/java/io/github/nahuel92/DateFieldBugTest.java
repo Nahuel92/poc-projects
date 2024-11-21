@@ -39,7 +39,7 @@ class DateFieldBugTest implements TestPropertyProvider {
     }
 
     @Test
-    @DisplayName("LocalDate fields should be retrieved as they are persisted. This test shows that they returned LocalDate is one day behind from the original value")
+    @DisplayName("LocalDate fields should be retrieved as they are persisted. This test shows that the returned LocalDate is one day behind from the original value")
     void successOnAutoFillingAuditFields() {
         // given
         final var entity = new MyEntity(
