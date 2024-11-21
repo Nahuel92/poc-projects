@@ -168,7 +168,7 @@
                     </annotationProcessorPaths>
                     <compilerArgs>
                         <arg>-Amicronaut.processing.group=io.github.nahuel92</arg>
-                        <arg>-Amicronaut.processing.module=datecreated-dateupdated-bug</arg>
+                        <arg>-Amicronaut.processing.module=date-field-bug</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
