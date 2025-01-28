@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: io.github.nahuel92
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [ app-name, assertj, http-client, java, java-application, junit, logback, maven, maven-enforcer-plugin, micronaut-aot, micronaut-http-validation, mockito, netty-server, properties, readme, serialization-jackson, shade, static-resources, tracing-opentelemetry-annotations, tracing-opentelemetry-exporter-jaeger, tracing-opentelemetry-http, tracing-opentelemetry-jaeger ]
