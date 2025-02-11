@@ -15,4 +15,4 @@ Deserialize without any errors as before.
 1. Run `MicronautSerializationBugTest#successOnGettingResponse`. You will see it failing
 2. Go to `pom.xml` and replace `micronaut.serialization.version` with `2.12.0` (which is the latest working version)
 3. Clean-compile the project
-4. Run again `MicronautSerializationBugTest#successOnGettingResponse`. You will that it passes now
+4. Run again `MicronautSerializationBugTest#successOnGettingResponse`. You will see that it passes now
