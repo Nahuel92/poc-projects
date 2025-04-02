@@ -1,5 +1,6 @@
 package io.github.nahuel92;
 
+import io.micronaut.data.jdbc.runtime.JdbcOperations;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.micronaut.test.support.TestPropertyProvider;
 import jakarta.inject.Inject;
@@ -25,6 +26,9 @@ class DateFieldBugTest implements TestPropertyProvider {
     @Inject
     private MyEntityRepository myEntityRepository;
 
+    @Inject
+    private JdbcOperations jdbcOperations;
+
     @Override
     public Map<String, String> getProperties() {
         if (!container.isRunning()) {
@@ -40,7 +44,7 @@ class DateFieldBugTest implements TestPropertyProvider {
 
     @Test
     @DisplayName("LocalDate fields should be retrieved as they are persisted. This test shows that the returned LocalDate is one day behind from the original value")
-    void successOnAutoFillingAuditFields() {
+    void failureOnMappingLocalDate() {
         // given
         final var entity = new MyEntity(
                 null,
@@ -53,5 +57,37 @@ class DateFieldBugTest implements TestPropertyProvider {
         // then
         final var saved = myEntityRepository.findById(savedId).orElseThrow();
         assertThat(saved.createdOn()).isEqualTo(LocalDate.of(2024, 1, 1));
+    }
+
+    @Test
+    @DisplayName("LocalDate fields are mapped ok using JdbcOperations")
+    void successOnMappingLocalDate() {
+        // given
+        final var localDate = LocalDate.of(2024, 1, 1);
+
+        // when
+        jdbcOperations.prepareStatement(
+                "INSERT INTO my_entity(created_on) VALUES (?)",
+                s -> {
+                    s.setDate(1, java.sql.Date.valueOf(localDate));
+                    s.executeUpdate();
+                    return null;
+                }
+        );
+
+        // then
+        final var savedLocalDate = jdbcOperations.prepareStatement(
+                "SELECT created_on FROM my_entity WHERE id = 1",
+                s -> {
+                    final var resultSet = s.executeQuery();
+                    if (resultSet.next()) {
+                        return resultSet.getDate("created_on");
+                    }
+                    return null;
+                }
+        );
+
+        assertThat(savedLocalDate.toLocalDate())
+                .isEqualTo(LocalDate.of(2024, 1, 1));
     }
 }
