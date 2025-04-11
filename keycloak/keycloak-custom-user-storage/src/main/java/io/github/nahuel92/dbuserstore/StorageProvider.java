@@ -13,9 +13,8 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserCredentialModel;
 import org.keycloak.models.UserModel;
-import org.keycloak.models.cache.CachedUserModel;
-import org.keycloak.models.cache.OnUserCache;
 import org.keycloak.models.credential.PasswordCredentialModel;
+import org.keycloak.storage.ReadOnlyException;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.user.UserLookupProvider;
@@ -23,16 +22,12 @@ import org.keycloak.storage.user.UserQueryProvider;
 import org.keycloak.storage.user.UserRegistrationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
-public class StorageProvider implements UserStorageProvider, UserLookupProvider, UserRegistrationProvider,
-        UserQueryProvider, CredentialInputUpdater, CredentialInputValidator, OnUserCache {
+public class StorageProvider implements CredentialInputValidator, CredentialInputUpdater,
+        UserLookupProvider, UserQueryProvider, UserRegistrationProvider, UserStorageProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageProvider.class);
-    private static final String PASSWORD_CACHE_KEY = UserAdapter.class.getName() + ".password";
     private final KeycloakSession keycloakSession;
     private final ComponentModel componentModel;
     private final EntityManager entityManager;
@@ -40,7 +35,8 @@ public class StorageProvider implements UserStorageProvider, UserLookupProvider,
     public StorageProvider(final KeycloakSession keycloakSession, final ComponentModel componentModel) {
         this.keycloakSession = keycloakSession;
         this.componentModel = componentModel;
-        this.entityManager = keycloakSession.getProvider(JpaConnectionProvider.class, "my-user-store").getEntityManager();
+        this.entityManager = keycloakSession.getProvider(JpaConnectionProvider.class, "my-user-store")
+                .getEntityManager();
     }
 
     @Override
@@ -55,41 +51,38 @@ public class StorageProvider implements UserStorageProvider, UserLookupProvider,
 
     @Override
     public boolean isConfiguredFor(final RealmModel realm, final UserModel user, final String credentialType) {
-        return supportsCredentialType(credentialType) && getPassword(user) != null;
+        return supportsCredentialType(credentialType);
     }
 
     @Override
     public boolean isValid(final RealmModel realm, final UserModel user, final CredentialInput credentialInput) {
-        if (!supportsCredentialType(credentialInput.getType()) || !(credentialInput instanceof UserCredentialModel cred)) {
+        if (!supportsCredentialType(credentialInput.getType())
+            || !(credentialInput instanceof UserCredentialModel userCredentialModel)) {
             return false;
         }
-        final var password = getPassword(user);
-        return password != null && password.equals(cred.getValue());
+        final var userFromDB = entityManager.find(MyUserEntity.class, user.getId());
+        if (userFromDB == null || userFromDB.getPassword() == null) {
+            return false;
+        }
+        // Important: This code is not production-ready.
+        return userFromDB.getPassword().equals(userCredentialModel.getValue());
     }
 
     @Override
-    public boolean updateCredential(final RealmModel realm, final UserModel user, final CredentialInput input) {
-        if (!supportsCredentialType(input.getType()) || !(input instanceof UserCredentialModel cred)) {
-            return false;
+    public boolean updateCredential(final RealmModel realmModel, final UserModel userModel,
+            final CredentialInput credentialInput) {
+        if (PasswordCredentialModel.TYPE.equals(credentialInput.getType())) {
+            throw new ReadOnlyException("user is read only for this update");
         }
-        final var adapter = getUserAdapter(user);
-        adapter.setPassword(cred.getValue());
-        return true;
+        return false;
     }
 
     @Override
     public void disableCredentialType(final RealmModel realm, final UserModel user, final String credentialType) {
-        if (!supportsCredentialType(credentialType)) {
-            return;
-        }
-        getUserAdapter(user).setPassword(null);
     }
 
     @Override
     public Stream<String> getDisableableCredentialTypesStream(final RealmModel realm, final UserModel user) {
-        if (getUserAdapter(user).getPassword() != null) {
-            return Stream.of(PasswordCredentialModel.TYPE);
-        }
         return Stream.empty();
     }
 
@@ -97,43 +90,38 @@ public class StorageProvider implements UserStorageProvider, UserLookupProvider,
     public UserModel getUserById(final RealmModel realm, final String id) {
         LOGGER.info("Retrieving user by id: '{}'", id);
         final var persistenceId = StorageId.externalId(id);
-        final var entity = entityManager.find(UserEntity.class, persistenceId);
-        if (entity == null) {
-            LOGGER.info("Could not find user by id: '{}'", id);
-            return null;
-        }
-        return new UserAdapter(keycloakSession, realm, componentModel, entity);
+        return getUserByUsername(realm, persistenceId); // entityManager.find(MyUserEntity.class, persistenceId);
     }
 
     @Override
     public UserModel getUserByUsername(final RealmModel realm, final String username) {
         LOGGER.info("Retrieving user by username: '{}'", username);
-        final var query = entityManager.createNamedQuery("getUserByUsername", UserEntity.class);
+        final var query = entityManager.createNamedQuery("getUserByUsername", MyUserEntity.class);
         query.setParameter("username", username);
         final var result = query.getResultList();
         if (result.isEmpty()) {
             LOGGER.info("Could not find username: '{}'", username);
             return null;
         }
-        return new UserAdapter(keycloakSession, realm, componentModel, result.getFirst());
+        return new MyCustomAdapter(keycloakSession, realm, componentModel, result.getFirst());
     }
 
     @Override
     public UserModel getUserByEmail(final RealmModel realm, final String email) {
         LOGGER.info("Retrieving user by email: '{}'", email);
-        final var query = entityManager.createNamedQuery("getUserByEmail", UserEntity.class);
+        final var query = entityManager.createNamedQuery("getUserByEmail", MyUserEntity.class);
         query.setParameter("email", email);
         final var result = query.getResultList();
         if (result.isEmpty()) {
             LOGGER.info("Could not find email: '{}'", email);
             return null;
         }
-        return new UserAdapter(keycloakSession, realm, componentModel, result.getFirst());
+        return new MyCustomAdapter(keycloakSession, realm, componentModel, result.getFirst());
     }
 
     @Override
     public Stream<UserModel> searchForUserStream(final RealmModel realm, final Map<String, String> params,
-                                                 final Integer firstResult, final Integer maxResults) {
+            final Integer firstResult, final Integer maxResults) {
         LOGGER.info("Retrieving user stream: '{}'", params);
         final var query = getUserEntityTypedQuery(params);
         if (firstResult != null) {
@@ -142,79 +130,40 @@ public class StorageProvider implements UserStorageProvider, UserLookupProvider,
         if (maxResults != null) {
             query.setMaxResults(maxResults);
         }
-        return query.getResultStream().map(entity -> new UserAdapter(keycloakSession, realm, componentModel, entity));
-    }
-
-    private TypedQuery<UserEntity> getUserEntityTypedQuery(final Map<String, String> params) {
-        final var search = StringUtils.defaultIfBlank(params.get(UserModel.SEARCH), StringUtils.EMPTY);
-        if ("*".equals(search)) {
-            return entityManager.createNamedQuery("getAllUsers", UserEntity.class);
-        }
-        return entityManager.createNamedQuery("searchForUser", UserEntity.class)
-                .setParameter("search", "%" + search.toLowerCase() + "%");
+        return query.getResultStream()
+                .map(entity -> new MyCustomAdapter(keycloakSession, realm, componentModel, entity));
     }
 
     @Override
     public Stream<UserModel> getGroupMembersStream(final RealmModel realm, final GroupModel group,
-                                                   final Integer firstResult, final Integer maxResults) {
+            final Integer firstResult, final Integer maxResults) {
         LOGGER.info("Not implemented - Retrieving group members: '{}'", group);
         return Stream.empty();
     }
 
     @Override
     public Stream<UserModel> searchForUserByUserAttributeStream(final RealmModel realm, final String attrName,
-                                                                final String attrValue) {
+            final String attrValue) {
         LOGGER.info("Not implemented - Retrieving user by user attribute: '{}'", attrValue);
         return Stream.empty();
     }
 
     @Override
     public UserModel addUser(final RealmModel realm, final String username) {
-        LOGGER.info("Adding user with username: '{}'", username);
-        final var userEntity = new UserEntity();
-        userEntity.setId(UUID.randomUUID().toString());
-        userEntity.setUsername(username);
-        userEntity.setCreatedTimestamp(ZonedDateTime.now().toEpochSecond());
-        entityManager.persist(userEntity);
-        return new UserAdapter(keycloakSession, realm, componentModel, userEntity);
+        return null;
     }
 
     @Override
     public boolean removeUser(final RealmModel realm, final UserModel user) {
-        LOGGER.info("Removing user with username: '{}'", user.getUsername());
-        final var persistenceId = StorageId.externalId(user.getId());
-        final var entity = entityManager.find(UserEntity.class, persistenceId);
-        if (entity == null) {
-            return false;
-        }
-        entityManager.remove(entity);
-        return true;
+        return false;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void onCache(final RealmModel realmModel, final CachedUserModel cachedUserModel, final UserModel userModel) {
-        LOGGER.info("Getting cached user model for user '{}'", userModel.getId());
-        final var password = ((UserAdapter) userModel).getPassword();
-        if (password != null) {
-            cachedUserModel.getCachedWith().put(PASSWORD_CACHE_KEY, password);
+    private TypedQuery<MyUserEntity> getUserEntityTypedQuery(final Map<String, String> params) {
+        final var search = StringUtils.defaultIfBlank(params.get(UserModel.SEARCH), StringUtils.EMPTY);
+        if ("*".equals(search)) {
+            return entityManager.createNamedQuery("getAllUsers", MyUserEntity.class);
         }
-    }
-
-    private String getPassword(final UserModel user) {
-        if (user instanceof CachedUserModel u) {
-            return (String) u.getCachedWith().get(PASSWORD_CACHE_KEY);
-        }
-        if (user instanceof UserAdapter u) {
-            return u.getPassword();
-        }
-        return null;
-    }
-
-    private UserAdapter getUserAdapter(final UserModel user) {
-        if (user instanceof CachedUserModel c) {
-            return (UserAdapter) c.getDelegateForUpdate();
-        }
-        return (UserAdapter) user;
+        return entityManager.createNamedQuery("searchForUser", MyUserEntity.class)
+                .setParameter("search", "%" + search.toLowerCase() + "%");
     }
 }

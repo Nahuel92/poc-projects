@@ -1,20 +1,42 @@
 services:
+  db:
+    container_name: db-keycloak
+    image: postgres:16.8
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=root
+    - POSTGRES_DB=mydb
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 2s
+      timeout: 1s
+      retries: 2
+    ports:
+    - "5433:5432"
+    volumes:
+    - ./conf/db:/docker-entrypoint-initdb.d
+    - db-keycloak-data:/var/lib/postgresql/data
+
   keycloak:
-    container_name: keycloak
-    image: keycloak-test
+    container_name: custom-user-storage-keycloak
     build: .
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=root
-      - DEBUG_PORT='*:8787'
-      - REST_API_URL=http://host.docker.internal:3000/api
-      #- KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/server.crt.pem
-      #- KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/server.key.pem
-    #volumes:
-    #  - $PWD/keycloak/server.crt.pem:/opt/keycloak/conf/server.crt.pem
-    #  - $PWD/keycloak/server.key.pem:/opt/keycloak/conf/server.key.pem
+    - KEYCLOAK_ADMIN=admin
+    - KEYCLOAK_ADMIN_PASSWORD=admin
+    - KC_HTTP_ENABLED=true
+    - KC_HOSTNAME_STRICT=false
+    - KC_HOSTNAME_STRICT_HTTPS=false
+    - DEBUG=true
+    - DEBUG_PORT=*:5005
+    - DB_URL=host.docker.internal
+    - DB_PORT=5433
+    - DB_SCHEMA=mydb
     ports:
-      - "8787:8787"
-      - "8080:8080"
-      #- "8443:8443"
-    command: "--debug --verbose start-dev"
+    - "8081:8080"
+    - "5006:5005"
+    command: "start --verbose --log-level=INFO --import-realm --log-console-color=true"
+    volumes:
+    - ./conf/realms:/opt/keycloak/data/import
+
+volumes:
+  db-keycloak-data:

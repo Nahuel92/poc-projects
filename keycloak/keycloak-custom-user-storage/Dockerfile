@@ -1,5 +1,4 @@
-FROM keycloak/keycloak:25.0.1
+FROM quay.io/keycloak/keycloak:25.0.2
 
-COPY ./target/*.jar /opt/keycloak/providers/custom-user-provider.jar
-COPY ./target/libs/*.jar /opt/keycloak/providers
-COPY ./quarkus.properties /opt/keycloak/conf/quarkus.properties
+COPY conf/quarkus.properties /opt/keycloak/conf
+COPY target/custom-jpa-user-storage-?.?-SNAPSHOT.jar /opt/keycloak/providers

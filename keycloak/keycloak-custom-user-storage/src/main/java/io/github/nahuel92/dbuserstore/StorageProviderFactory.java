@@ -14,9 +14,4 @@ public class StorageProviderFactory implements UserStorageProviderFactory<Storag
     public String getId() {
         return "my-storage-provider";
     }
-
-    @Override
-    public String getHelpText() {
-        return "This is a customer user storage provider that uses H2 as backend";
-    }
 }
