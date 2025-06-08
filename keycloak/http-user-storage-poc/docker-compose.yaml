@@ -15,3 +15,12 @@ services:
       - "8080:8080"
       - "5005:5005"
     command: "start"
+
+  mockoon:
+    container_name: mockoon
+    image: mockoon/cli:9.2.0
+    ports:
+      - "3000:3000"
+    command: [ "--data=/data/data.json" ]
+    volumes:
+      - "${PWD}/conf/mockoon:/data"
