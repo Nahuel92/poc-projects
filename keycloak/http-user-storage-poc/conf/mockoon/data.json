@@ -1,0 +1,300 @@
+{
+  "uuid": "322eefde-9ac7-415f-b7fc-8d56d26c24f5",
+  "lastMigration": 33,
+  "name": "Stubbed HTTP User API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "d4b57ee0-6e9d-4f8f-9755-5a14148892d8",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "users",
+      "responses": [
+        {
+          "uuid": "1deb5bd9-cdce-4a3d-ba23-3b4ab8fe2945",
+          "body": "[\n  {{data 'Rick'}},\n  {{data 'Morty'}},\n  {{data 'Summer'}},\n  {{data 'Jerry'}},\n  {{data 'Beck'}}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "All Users",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "c5a9cea6-927c-4d3f-b1cc-5c2db96e9622",
+          "body": "{\n  \"username\": \"rick123\",\n  \"password\": \"rick123123\",\n  \"firstName\": \"Rick\",\n  \"lastName\": \"Sanchez\",\n  \"email\": \"rick@sanchez.com\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Rick",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "ztpf",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "username",
+              "value": "rick123",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "email",
+              "value": "rick@sanchez.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "b56d6d22-ca0f-48c8-9eb0-8ab2e5a7c99a",
+          "body": "{\n  \"username\": \"morty123\",\n  \"password\": \"morty123123\",\n  \"firstName\": \"Morty\",\n  \"lastName\": \"Smith\",\n  \"email\": \"morty@smith.com\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Morty",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "71f2",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "username",
+              "value": "morty123",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "email",
+              "value": "morty@smith.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "060f39a8-e250-472a-9ae5-b2f0ea7edef9",
+          "body": "{\n  \"username\": \"summer123\",\n  \"password\": \"summer123123\",\n  \"firstName\": \"Summer\",\n  \"lastName\": \"Smith\",\n  \"email\": \"summer@smith.com\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Summer",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "8mjs",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "username",
+              "value": "summer123",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "email",
+              "value": "summer@smith.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "38a9f44d-1af5-42e4-bd0c-6ffbfc07bb71",
+          "body": "{\n  \"username\": \"jerry123\",\n  \"password\": \"jerry123123\",\n  \"firstName\": \"Jerry\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jerry@smith.com\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Jerry",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "pf9s",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "username",
+              "value": "jerry123",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "email",
+              "value": "jerry@smith.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "1ba99cb8-e557-48f2-87a8-401a7f5e955a",
+          "body": "{\n  \"username\": \"beck123\",\n  \"password\": \"beck123123\",\n  \"firstName\": \"Beck\",\n  \"lastName\": \"Smith\",\n  \"email\": \"beck@smith.com\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Beck",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "umep",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "username",
+              "value": "beck123",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "email",
+              "value": "beck@smith.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "d4b57ee0-6e9d-4f8f-9755-5a14148892d8"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [
+    {
+      "uuid": "7ab07b45-6937-4b0f-b1d9-ae04321d3cbb",
+      "id": "ztpf",
+      "name": "Rick",
+      "documentation": "",
+      "value": "{\n  \"username\": \"rick123\",\n  \"password\": \"rick123123\",\n  \"firstName\": \"Rick\",\n  \"lastName\": \"Sanchez\",\n  \"email\": \"rick@sanchez.com\"\n}"
+    },
+    {
+      "uuid": "de677074-7aa5-48a1-8e83-e045a1651237",
+      "id": "71f2",
+      "name": "Morty",
+      "documentation": "",
+      "value": "{\n  \"username\": \"morty123\",\n  \"password\": \"morty123123\",\n  \"firstName\": \"Morty\",\n  \"lastName\": \"Smith\",\n  \"email\": \"morty@smith.com\"\n}"
+    },
+    {
+      "uuid": "e9ee2202-15f7-413c-86f2-3484440ee4e0",
+      "id": "8mjs",
+      "name": "Summer",
+      "documentation": "",
+      "value": "{\n  \"username\": \"summer123\",\n  \"password\": \"summer123123\",\n  \"firstName\": \"Summer\",\n  \"lastName\": \"Smith\",\n  \"email\": \"summer@smith.com\"\n}"
+    },
+    {
+      "uuid": "13c1e6f4-f142-4dcb-8a6d-8ff5ff6b1b45",
+      "id": "pf9s",
+      "name": "Jerry",
+      "documentation": "",
+      "value": "{\n  \"username\": \"jerry123\",\n  \"password\": \"jerry123123\",\n  \"firstName\": \"Jerry\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jerry@smith.com\"\n}"
+    },
+    {
+      "uuid": "d5b80e57-8d79-4658-82aa-6e2d0fcc710a",
+      "id": "umep",
+      "name": "Beck",
+      "documentation": "",
+      "value": "{\n  \"username\": \"beck123\",\n  \"password\": \"beck123123\",\n  \"firstName\": \"Beck\",\n  \"lastName\": \"Smith\",\n  \"email\": \"beck@smith.com\"\n}"
+    }
+  ],
+  "callbacks": []
+}
