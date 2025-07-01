@@ -64,13 +64,4 @@ public class HTTPUserAdapter extends AbstractUserAdapterFederatedStorage {
     public int hashCode() {
         return Objects.hash(super.hashCode(), username, password, email);
     }
-
-    @Override
-    public String toString() {
-        return "HttpUserModel{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }
