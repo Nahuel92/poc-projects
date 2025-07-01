@@ -1,1 +1,1 @@
-io.github.nahuel92.httpuserstore.HttpStorageProviderFactory
+io.github.nahuel92.httpuserstore.provider.HTTPStorageProviderFactory
