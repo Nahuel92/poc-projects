@@ -7,6 +7,7 @@ I opened 2 bug reports (with one duplicated in a different repo since I'm not ex
 - [Micronaut Core #10813](https://github.com/micronaut-projects/micronaut-core/issues/10813).
 - [Micronaut Test #1025](https://github.com/micronaut-projects/micronaut-test/issues/1025) (duplicated from previous
   one).
+- [Micronaut Test #1032](https://github.com/micronaut-projects/micronaut-test/issues/1032)
 
 ## Bug test cases
 
