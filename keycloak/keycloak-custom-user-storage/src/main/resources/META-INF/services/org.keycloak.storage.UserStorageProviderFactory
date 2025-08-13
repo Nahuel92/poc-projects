@@ -1,0 +1,2 @@
+io.github.nahuel92.dbuserstore.StorageProviderFactory
+io.github.nahuel92.httpuserstore.HttpStorageProviderFactory
