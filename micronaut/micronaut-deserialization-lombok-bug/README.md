@@ -1,4 +1,8 @@
-## Description
+## Micronaut Deserialization Lombok Bug
+
+Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-core/issues/11538
+
+### Description
 
 Versions 4.7.4 of:
 
@@ -12,7 +16,7 @@ Introduced a bug that was not present in versions:
 
 When using Java records plus `@Builder` from Lombok.
 
-## Expected behavior
+### Expected behavior
 
 When using nested Java records, and:
 
@@ -22,19 +26,19 @@ When using nested Java records, and:
 1. If the payload is null or empty, every field (including nested-record fields) should be validated.
 2. If the payload is valid, the DTO should be deserialized correctly
 
-## Actual behavior
+### Actual behavior
 
 1. If the payload is null or empty, nested-record fields aren't validated and the nested-record is shown as null:
 
-   ### Output example using a newer Micronaut version (bugged)
+   #### Output example using a newer Micronaut version (bugged)
 
-    ```
-    jakarta.validation.ConstraintViolationException:
-    get.<return value>.id: must not be null,
-    get.<return value>.commonDTO: must not be null  // should list validations for all of its fields
-    ```
+     ```
+     jakarta.validation.ConstraintViolationException:
+     get.<return value>.id: must not be null,
+     get.<return value>.commonDTO: must not be null  // should list validations for all of its fields
+     ```
 
-   ### Output example using a previous Micronaut version (not bugged)
+   #### Output example using a previous Micronaut version (not bugged)
 
     ```
     jakarta.validation.ConstraintViolationException:
@@ -45,16 +49,16 @@ When using nested Java records, and:
 
 2. If the payload is valid, the DTO fails to be deserialized
 
-   ### Output example using a newer Micronaut version (bugged)
+   #### Output example using a newer Micronaut version (bugged)
 
     ```
     Expecting code not to raise a throwable but caught
     "jakarta.validation.ConstraintViolationException: get.<return value>.commonDTO: must not be null
     ```
 
-   ### Output example using a previous Micronaut version (not bugged)
+#### Output example using a previous Micronaut version (not bugged)
 
-   Test passes without throwing and exception
+Test passes without throwing and exception
 
 ## How to test?
 
