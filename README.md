@@ -1,1 +1,1 @@
-# poc-projects
+# PoC Projects
