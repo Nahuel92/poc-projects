@@ -1,3 +1,7 @@
+#Micronaut Data Date Field Bug
+
+Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-data/discussions/3241
+
 ### Description
 
 The issue happens when mapping a DB field type `DATE` to a Java type `LocalDate`.
