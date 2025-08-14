@@ -12,7 +12,7 @@ public interface MyRepository extends GenericRepository<MyEntity, Integer> {
                 SELECT a.id AS id,
                        a.attribute AS attribute,
                        CASE
-                        WHEN a.another_attribute = 'c' THEN 'CREATE'
+                        WHEN a.another_attribute = 'c' THEN 'INSERT'
                         WHEN a.another_attribute = 'u' THEN 'UPDATE'
                         WHEN a.another_attribute = 'd' THEN 'DELETE'
                         ELSE 'UNKNOWN'

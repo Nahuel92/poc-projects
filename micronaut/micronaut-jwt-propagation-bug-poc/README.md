@@ -1,18 +1,25 @@
-## Micronaut 3.7.4 Documentation
+## Micronaut JWT Propagation Bug
 
-- [User Guide](https://docs.micronaut.io/3.7.4/guide/index.html)
-- [API Reference](https://docs.micronaut.io/3.7.4/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/3.7.4/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
+Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-security/issues/1161
 
----
+### Description
 
-## Feature security-jwt documentation
+JWT propagation doesn't work if JWTs don't contain a valid signature.
 
-- [Micronaut Security JWT documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)
+### Expected behavior
 
-## Feature http-client documentation
+Automatic JWT propagation should work for services that are not themselves secured but needs to propagate JWT from the
+request and use it with downstream services.
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
+### Actual behavior
 
+Automatic JWT propagation is not working
+
+## How to test?
+
+1. Run `RecordLombokBuilderTest`. You will see it failing
+2. Go to `pom.xml` and comment-out current versions of both Micronaut parent and Core
+3. Uncomment their previous versions
+4. Clean-compile the project
+5. Run again `RecordLombokBuilderTest`. You will that it passes now
 

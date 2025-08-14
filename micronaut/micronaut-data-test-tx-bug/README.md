@@ -1,5 +1,7 @@
 ## Micronaut Data Test Bug
 
+Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-data/issues/3058
+
 ### Description
 
 While testing an app using Micronaut Data JDBC, I have the need of running queries to change data immediately before

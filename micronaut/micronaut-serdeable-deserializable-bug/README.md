@@ -1,4 +1,8 @@
-## Description
+## Micronaut @Serdeable.Deserializable Bug
+
+Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-core/issues/11532
+
+### Description
 
 Versions 4.7.4 of:
 
@@ -12,11 +16,11 @@ Introduced a bug that was not present in versions:
 
 When using `@Serdeable.Deserializable(as = ImmutableList.class)` (ImmutableList is from the Guava collections).
 
-## Expected behavior
+### Expected behavior
 
 Deserialize without any errors as before
 
-## How to test?
+### How to test?
 
 1. Run `SerdeableDeserializableTest`. You will see it failing
 2. Go to `pom.xml` and comment-out current versions of both Micronaut parent and Core

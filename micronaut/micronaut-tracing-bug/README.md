@@ -1,4 +1,8 @@
-## Description
+## Micronaut Tracing Bug
+
+Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-tracing/issues/702
+
+### Description
 
 Micronaut opentracing (the latest version is 6.9.0 at the time of writing) has a dependency issue that causes the
 following exception to be thrown:
@@ -9,11 +13,11 @@ following exception to be thrown:
     Caused by: java.lang.NoClassDefFoundError: kotlin/jvm/internal/Intrinsics
 ```
 
-## Expected behavior
+### Expected behavior
 
 OTEL to work out of the box
 
-## Actual behavior
+### Actual behavior
 
 A `ClassNotFound` exception is thrown when running the app:
 
@@ -23,11 +27,11 @@ A `ClassNotFound` exception is thrown when running the app:
     Caused by: java.lang.NoClassDefFoundError: kotlin/jvm/internal/Intrinsics
 ```
 
-## How to test?
+### How to test?
 
 1. Run `MicronautTracingBugTest`. You will see one test failing (OTEL enabled) and one passing (OTEL disabled)
 
-## Workaround
+### Workaround
 
 Add this dependency to the `pom.xml` file:
 

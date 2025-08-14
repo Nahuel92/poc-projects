@@ -1,4 +1,4 @@
-## Micronaut Data Update bug
+## Micronaut Data Update Bug
 
 Example project to attach to the bug report https://github.com/micronaut-projects/micronaut-data/issues/3049
 
