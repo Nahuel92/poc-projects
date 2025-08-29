@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="01" author="nahuel92">
+        <createTable tableName="my_entity">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="field_1" type="varchar2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="field_2" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="my_entity">
+            <column name="field_1" value="test1"/>
+            <column name="field_2" value="123"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
