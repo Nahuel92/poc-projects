@@ -1,10 +1,13 @@
 ## Micronaut 5.1.5 Validation Annotation Bug
 
+PoC project for https://github.com/micronaut-projects/micronaut-core/issues/13202
+
 ### Description
 
 A recent version of Micronaut parent introduced a bug that was not present in previous versions.
 
-When using validation annotations in a service class (e.g., `@NotNull`, `@NotEmpty`, etc.), I get:
+When using validation annotations (e.g.,`@NotNull`, `@NotEmpty`, etc.) in a service's constructor
+that takes a collection (e.g., `Set<?>`, `List<?>`, etc.), I get:
 
 ```
 Message: Cannot validate bean [io.github.nahuel92.MyService]. No bean introspection present.
@@ -18,8 +21,9 @@ at io.micronaut.validation.validator.DefaultValidator.validateBean(DefaultValida
 
 ### Expected behavior
 
-Validation annotations used at service level to work as before. Annotating a service class with
-`@Introspected` doesn't make any sense because a service is not a DTO/entity.
+Validation annotations used in a service's constructor that takes a collection working as before.
+Annotating a service with`@Introspected` doesn't make any sense because a service is not a
+DTO/entity.
 
 ### How to test?
 
